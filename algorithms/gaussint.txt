@@ -1,3 +1,8 @@
+/*
+The main idea of this method is Gauss method to make upper-triangle matrix from given
+and calculate product of elements from main diagonal.
+For integer we avoid non-int division (with non-int private)
+*/
 int det(){
     int gcd(int a, int b)
     {
