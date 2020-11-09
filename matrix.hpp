@@ -93,7 +93,7 @@ namespace matrix
             }
         }
 
-        const row operator[](const int index) const
+        const row operator[](int index) const
         {
             return row{matrix_[index]};
         }
@@ -105,70 +105,74 @@ namespace matrix
 
         T det()
         {
-            matrix l(n_), u(n_);
-
+            double mem = 1;
             for (int i = 0; i < n_; ++i)
-            { //тут смотрю, чтобы главные миноры не были равны нулю, для этого достаточно, чтобы на главной диагонали не было нулевых элементов
-                if (matrix_[i][i] == 0)
+            {
+                if (i == (n_ - 1))
                 {
-                    for (int k = 0; k < n_; ++k)
+                    for(int k = 0; k < n_; ++k)
                     {
-                        if (k == i)
-                            continue;
-
-                        if (matrix_[k][i] != 0)
+                        if(matrix_[k][i] != 0)
                         {
-                            for (int j = 0; j < n_; ++j)
+                            for(int j = 0; j < n_; ++j)
                             {
                                 matrix_[i][j] += matrix_[k][j];
+                                break;
                             }
+                        }
+                    }
+                }
+
+                if (matrix_[i][i] == 0)
+                {
+                    for (int k = i + 1; k < n_; ++k)
+                    {
+                        if (matrix_[k][i] != 0)
+                        {
+                            T* swap = matrix_[i];
+                            matrix_[i] = matrix_[k];
+                            matrix_[k] = swap;
+                            mem *= pow((-1), (k - i));
                             break;
                         }
                         if (k == n_ - 1)
-                            return 0; //тут есть столбец, где все нули
+                            return 0; //here is col with 0-s
+                    }                 
+                }//after these actions matrix_[i][i] != 0
+
+                for (int k = i + 1; k < n_; ++k)
+                {
+                    if (matrix_[k][i] == 0)
+                    {
+                        continue;
                     }
+
+
+                    mem /= matrix_[i][i];
+                    mem *= matrix_[k][i];
+                    double tmp1 = matrix_[i][i], tmp2 = matrix_[k][i];
+                    std::cout << "tmp1[" << i << "] = " << tmp1 << std::endl;
+
+                    for (int c = 0; c < n_; ++c)
+                    {
+                        matrix_[i][c] /= tmp1;
+                        matrix_[i][c] *= tmp2;
+                    }
+
+                    for (int c = 0; c < n_; ++c)
+                        matrix_[k][c] -= matrix_[i][c];
+
+                    for(int c = 0; c < n_; ++c)
+                        matrix_[i][c] *= tmp1;
                 }
             }
 
+            double det = 1;
             for (int i = 0; i < n_; ++i)
-            {
-                for (int j = 0; j < n_; ++j)
-                {
-                    if (j < i)
-                        l[j][i] = 0;
-                    else
-                    {
-                        l[j][i] = matrix_[j][i];
-                        for (int k = 0; k < i; ++k)
-                        {
-                            l[j][i] = l[j][i] - l[j][k] * u[k][i];
-                        }
-                    }
-                }
-                for (int j = 0; j < n_; ++j)
-                {
-                    if (j < i)
-                        u[i][j] = 0;
-                    else if (j == i)
-                        u[i][j] = 1;
-                    else
-                    {
-                        if (l[i][i] == 0)
-                            return 0; //тут есть элемент в l, который равен нулю
-                        u[i][j] = matrix_[i][j] / l[i][i];
-                        for (int k = 0; k < i; ++k)
-                        {
-                            u[i][j] = u[i][j] - ((l[i][k] * u[k][j]) / l[i][i]);
-                        }
-                    }
-                }
-            }
-            float d = 1;
-            for (int i = 0; i < n_; ++i)
-            {
-                d *= l[i][i] * u[i][i];
-            }
-            return d;
+                det *= matrix_[i][i];
+
+            det /= mem;
+            return det;
         }
     };
 } // namespace matrix
