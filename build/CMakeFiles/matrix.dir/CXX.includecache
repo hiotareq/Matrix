@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+c:/Users/bobro/Desktop/matrix/Matrix/main.cpp
+matrix.hpp
+c:/Users/bobro/Desktop/matrix/Matrix/matrix.hpp
+fstream
+-
+cstdlib
+-
+ctime
+-
+
+c:/Users/bobro/Desktop/matrix/Matrix/matrix.hpp
+iostream
+-
+vector
+-
+algorithm
+-
+memory
+-
+numeric
+-
+typeinfo
+-
+cmath
+-
+

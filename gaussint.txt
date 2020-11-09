@@ -1,0 +1,71 @@
+int det(){
+    int gcd(int a, int b)
+    {
+        if (b == 0)
+            return a;
+        else
+            return gcd(b, a % b);
+    }
+
+    int lcm(int a, int b)
+    {
+        if (a == 0 && b == 0)
+            return 0;
+        return a * b / gcd(a, b);
+    }
+
+    int mem = 1;
+    for (int i = 0; i < n_; ++i)
+    {
+        if (i == n_ - 1)
+            break;
+
+        if (matrix_[i][i] == 0)
+            {
+
+                for (int k = i; k < n_; ++k)
+                {
+                    if (matrix_[k][i] != 0)
+                    {
+                        std::swap(matrix_[i], matrix_[k]);
+                        mem *= pow(-1, k - i);
+                        break;
+                    }
+                    if (k == n_ - 1)
+                        return 0; //тут на диагонали - 0, и под ним тоже нули
+                }   //после этих действий matrix_[i][i] != 0
+            }
+
+        for (int k = i + 1; k < n_; ++k)
+            {
+                int varlcm = lcm(matrix_[i][i], matrix_[k][i]);
+
+                if (varlcm != 0)
+                    { //тут matrix_[i][i] and matrix_[k][i] одновременно не равны нулю
+
+                        int ifactor = varlcm / matrix_[i][i];
+                        for (int c = 0; c < n_; ++c)
+                            matrix_[i][c] *= ifactor;
+
+                        int kfactor = varlcm / matrix_[k][i];
+                        for (int c = 0; c < n_; ++c)
+                            matrix_[k][c] *= kfactor;
+
+                        for (int c = 0; c < n_; ++c)
+                            matrix_[k][c] -= matrix_[i][c];
+
+                        for (int c = 0; c < n_; ++c)
+                            matrix_[i][c] /= ifactor;
+
+                        mem *= kfactor;
+                    } //else matrix_[i][i] != 0, matrix_[k][i] = 0
+            }
+    }
+
+    int det = 1;
+    for (int i = 0; i < n_; ++i)
+        det *= matrix_[i][i];
+
+    det /= mem;
+    return det;
+}
