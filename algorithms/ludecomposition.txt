@@ -1,6 +1,9 @@
 /*
 The main idea of this method is tho make two triangle-matrices from given and
 calculate product of elements from main diagonals
+LU-decomposition is possible only if matrix 1)non-degenerate 2)main minors aren't 0-s
+1) easily checked by if(l[i][i] == 0)
+2)idk know good enough way to check main minors fast
 */
 double det()
         {
