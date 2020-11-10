@@ -2,73 +2,43 @@
 The main idea of this method is Gauss method to make upper-triangle matrix from given
 and calculate product of elements from main diagonal; without limits for integer
 */
-T det()
-        {
-            long double mem = 1;
-            for (int i = 0; i < n_; ++i)
-            {
-                if (i == (n_ - 1))
-                {
-                    for(int k = 0; k < n_; ++k)
-                    {
-                        if(matrix_[k][i] != 0)
-                        {
-                            for(int j = 0; j < n_; ++j)
-                            {
-                                matrix_[i][j] += matrix_[k][j];
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (matrix_[i][i] == 0)
-                {
-                    for (int k = i + 1; k < n_; ++k)
-                    {
-                        if (matrix_[k][i] != 0)
-                        {
-                            T* swap = matrix_[i];
-                            matrix_[i] = matrix_[k];
-                            matrix_[k] = swap;
-                            mem *= pow((-1), (k - i));
+T det() {
+            long double mem = 1;//variable to remember actions with determinant
+            for (int i = 0; i < n_; ++i) {
+                /*
+                checking if matrix_[i][i] == 0, because we mustn't have it in Gauss method
+                 */
+                if (matrix_[i][i] == 0) {
+                    for (int j = i + 1; j < n_; ++j) {
+                        if (matrix_[j][i] != 0) {
+                            std::swap(matrix_[i], matrix_[j]);
+                            mem *= std::pow(-1, j - i);
                             break;
                         }
-                        if (k == n_ - 1)
-                            return 0; //here is col with 0-s
-                    }                 
-                }//after these actions matrix_[i][i] != 0
-
-                for (int k = i + 1; k < n_; ++k)
-                {
-                    if (matrix_[k][i] == 0)
-                    {
-                        continue;
                     }
+                }
+                /*
+                after these actions matrix_[i][i] != 0
+                */
 
+                for (int k = i + 1; k < n_; ++k) {//take a look at cells under diagonal
 
-                    mem /= matrix_[i][i];
-                    mem *= matrix_[k][i];
-                    long double tmp1 = matrix_[i][i], tmp2 = matrix_[k][i];
-
-                    for (int c = 0; c < n_; ++c)
-                    {
-                        matrix_[i][c] /= tmp1;
-                        matrix_[i][c] *= tmp2;
-                    }
-
-                    for (int c = 0; c < n_; ++c)
-                        matrix_[k][c] -= matrix_[i][c];
-
-                    for(int c = 0; c < n_; ++c)
-                        matrix_[i][c] *= tmp1;
+                    if (matrix_[k][i] != 0) {
+                        std::cout << matrix_[i][i]<< std::endl;
+                        long double tmp = matrix_[k][i] / matrix_[i][i];
+                        mem /= tmp;
+                        for (int j = 0; j < n_; ++j) {
+                            matrix_[i][j] *= tmp;
+                            matrix_[k][j] -= matrix_[i][j];//make cells under diagonal equal zero
+                        }
+                    }//else matrix_[k][i] == 0, do nothing
                 }
             }
-
             long double det = 1;
-            for (int i = 0; i < n_; ++i)
+            for (int i = 0; i < n_; ++i) {
                 det *= matrix_[i][i];
+            }
 
-            det /= mem;
+            det *= mem;
             return det;
         }

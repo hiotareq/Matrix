@@ -4,7 +4,7 @@ and calculate product of elements from main diagonal.
 For integer we avoid non-int division (with non-int private)
 */
 int det(){
-    int gcd(int a, int b)
+    int gcd(int a, int b)//find greatest common divider
     {
         if (b == 0)
             return a;
@@ -12,14 +12,14 @@ int det(){
             return gcd(b, a % b);
     }
 
-    int lcm(int a, int b)
+    int lcm(int a, int b)//find least common multiple
     {
         if (a == 0 && b == 0)
             return 0;
         return a * b / gcd(a, b);
     }
 
-    int mem = 1;
+    int mem = 1;//variable to remember actions with determinant
     for (int i = 0; i < n_; ++i)
     {
         if (i == n_ - 1)
@@ -37,7 +37,7 @@ int det(){
                         break;
                     }
                     if (k == n_ - 1)
-                        return 0; //тут на диагонали - 0, и под ним тоже нули
+                        return 0; //el-t on main diagonal and under it are 0-s
                 }   //после этих действий matrix_[i][i] != 0
             }
 
@@ -46,7 +46,7 @@ int det(){
                 int varlcm = lcm(matrix_[i][i], matrix_[k][i]);
 
                 if (varlcm != 0)
-                    { //тут matrix_[i][i] and matrix_[k][i] одновременно не равны нулю
+                    { //matrix_[i][i] and matrix_[k][i] aren't 0-s at one time
 
                         int ifactor = varlcm / matrix_[i][i];
                         for (int c = 0; c < n_; ++c)

@@ -14,7 +14,7 @@ namespace matrix {
     template<typename T>
     class matrix final {
     private:
-        int n_; //количество строк/столбцов
+        int n_; //number of columns/rows
         T **matrix_;
 
         struct row {
@@ -70,7 +70,7 @@ namespace matrix {
             }
         }
 
-        matrix(int n, bool flag) { //конструктор для единичной матрицы
+        matrix(int n, bool flag) { //ctr for identity matrix
             n_ = n;
             matrix_ = new T *[n_];
             for (int i = 0; i < n_; ++i) {
@@ -96,9 +96,9 @@ namespace matrix {
         T det() {
             long double mem = 1;//variable to remember actions with determinant
             for (int i = 0; i < n_; ++i) {
-                //////////////////////////////////////////////////////////////////////////////
-                //checking if matrix_[i][i] == 0, because we mustn't have it in Gauss method//
-                //////////////////////////////////////////////////////////////////////////////
+                /*
+                checking if matrix_[i][i] == 0, because we mustn't have it in Gauss method
+                 */
                 if (matrix_[i][i] == 0) {
                     for (int j = i + 1; j < n_; ++j) {
                         if (matrix_[j][i] != 0) {
@@ -108,9 +108,9 @@ namespace matrix {
                         }
                     }
                 }
-                //////////////////////////////////////////////////////////////
-                //after these actions we don't have cells on diagonal with 0//
-                //////////////////////////////////////////////////////////////
+                /*
+                after these actions matrix_[i][i] != 0
+                */
 
                 for (int k = i + 1; k < n_; ++k) {//take a look at cells under diagonal
 
